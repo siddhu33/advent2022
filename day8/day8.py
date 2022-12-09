@@ -16,13 +16,11 @@ def part1(grid):
             after_rows = [r[col] for r in grid[row + 1 :]]
             prev_cols = grid[row][:col]
             after_cols = grid[row][col + 1 :]
+            neighbours = [prev_rows[::-1], after_rows, prev_cols[::-1], after_cols]
             max_viewing_score = max(
                 max_viewing_score,
-                calc_viewing_score(
-                    num, [prev_rows[::-1], after_rows, prev_cols[::-1], after_cols]
-                ),
+                calc_viewing_score(num, neighbours),
             )
-            neighbours = [prev_rows, after_rows, prev_cols, after_cols]
             if any(all(num > i for i in n) for n in neighbours):
                 visible += 1
     visible += (len(grid) * 2) + (len(grid[0]) - 2) * 2
