@@ -54,13 +54,8 @@ function step_tail(new_head, tail) {
     }
 }
 
-const myRope = rope(10);
-let start = -5;
-labels = []
-while (start < 5) {
-    labels.push(start);
-    start = start + 1;
-}
+let myRope = rope(10);
+
 const myChart = new Chart(document.getElementById('main'), {
     type: "scatter",
     data: {
@@ -83,6 +78,14 @@ const myChart = new Chart(document.getElementById('main'), {
     }
 });
 
+document.getElementById("rope").addEventListener("change", event => {
+    const newLength = parseInt(event.target.value, 10)
+    if (newLength != null) {
+        myRope = rope(newLength);
+    }
+    updateChart();
+});
+
 window.addEventListener("keydown", function (event) {
     if (event.defaultPrevented) {
         return; // Do nothing if the event was already processed
@@ -91,23 +94,19 @@ window.addEventListener("keydown", function (event) {
     switch (event.key) {
         case "ArrowDown":
             move_rope("D", myRope);
-            myChart.data.datasets[0].data = myRope.map(knot => ({ x: knot[0], y: knot[1] }))
-            myChart.update()
+            updateChart();
             break;
         case "ArrowUp":
             move_rope("U", myRope);
-            myChart.data.datasets[0].data = myRope.map(knot => ({ x: knot[0], y: knot[1] }))
-            myChart.update()
+            updateChart();
             break;
         case "ArrowLeft":
             move_rope("L", myRope);
-            myChart.data.datasets[0].data = myRope.map(knot => ({ x: knot[0], y: knot[1] }))
-            myChart.update()
+            updateChart();
             break;
         case "ArrowRight":
             move_rope("R", myRope);
-            myChart.data.datasets[0].data = myRope.map(knot => ({ x: knot[0], y: knot[1] }))
-            myChart.update()
+            updateChart();
             break;
         default:
             return; // Quit when this doesn't handle the key event.
@@ -117,3 +116,8 @@ window.addEventListener("keydown", function (event) {
 
 }, true);
 console.log("Loaded!");
+
+function updateChart() {
+    myChart.data.datasets[0].data = myRope.map(knot => ({ x: knot[0], y: knot[1] }));
+    myChart.update();
+}
